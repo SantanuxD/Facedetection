@@ -2,14 +2,21 @@ import cv2
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
-img = cv2.imread('test.jpg.jpg')
+cap = cv2.VideoCapture(0)
 
-gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+while True:
+    _, img = cap.read()
 
-faces = face_cascade.detectMultiScale(gray, 1.1, 4)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-for (x, y, w, h) in faces:
-    cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
+    faces = face_cascade.detectMultiScale(gray, 1.1, 4)
 
-cv2.imshow('img', img)
-cv2.waitKey()
+    for (x, y, w, h) in faces:
+        cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
+
+    cv2.imshow('img', img)
+    k = cv2.waitKey(30) & 0xff
+    if k == 27:
+        break
+
+cap.release()
